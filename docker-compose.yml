@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  wca-openai-proxy:
+    # You can use pre-built images instead of building locally
+    # image: docker.io/sshnaidm/wca2openai:latest
+    # image: quay.io/sshnaidm1/wca2openai:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - IAM_APIKEY=${IAM_APIKEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/v1/models"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    volumes:
+      - ./src:/app/src  # For development - allows code changes without rebuilding
