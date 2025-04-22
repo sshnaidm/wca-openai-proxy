@@ -1,14 +1,14 @@
 # Watson Code Assistant OpenAI Proxy
 
-A Flask-based proxy server that adapts Watson AI's API to be compatible with OpenAI's API format. This allows applications designed to work with OpenAI's API to seamlessly use Watson Code Assistant (WCA) from IBM instead.
+A Flask-based proxy server that adapts Watson AI Code Assistant API to be compatible with OpenAI's API format. This allows applications designed to work with OpenAI's API to seamlessly use Watson Code Assistant (WCA) from IBM instead.
 
 ## Overview
 
 This proxy service translates requests from OpenAI's API format to Watson AI's format and vice versa, enabling you to:
 
-- Use tools and libraries designed for OpenAI with Watson AI
+- Use tools and libraries designed for OpenAI with Watson AI Code Assistant
 - Maintain compatibility with OpenAI-dependent applications
-- Leverage Watson AI's capabilities through a familiar API interface
+- Leverage Watson AI Code Assistant's capabilities through a familiar API interface
 
 ## Features
 
@@ -22,7 +22,7 @@ This proxy service translates requests from OpenAI's API format to Watson AI's f
 ## Prerequisites
 
 - Python 3.9 or higher
-- Watson AI API key (IAM_APIKEY)
+- Watson AI Code Assistant API key (IAM_APIKEY)
 - Docker/Podman (optional, for containerized deployment)
 
 ## Installation
@@ -32,7 +32,7 @@ This proxy service translates requests from OpenAI's API format to Watson AI's f
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/wca-openai-proxy.git
+   git clone https://github.com/sshnaidm/wca-openai-proxy
    cd wca-openai-proxy
    ```
 
@@ -52,6 +52,12 @@ This proxy service translates requests from OpenAI's API format to Watson AI's f
 
    ```bash
    python src/watson_openai_proxy.py
+   ```
+
+   or with specific host and port:
+
+   ```bash
+   HOST=0.0.0.0 PORT=5555 python src/watson_openai_proxy.py
    ```
 
 ### Docker/Podman Setup
@@ -92,61 +98,11 @@ podman run -p 5000:5000 -e IAM_APIKEY="your-watson-ai-api-key" quay.io/sshnaidm1
    podman run -p 5000:5000 -e IAM_APIKEY="your-watson-ai-api-key" wca-openai-proxy
    ```
 
-## Usage
-
-### API Endpoints
-
-#### Chat Completions
-
-```bash
-curl http://localhost:5000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "watson-ai",
-    "messages": [
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "Hello, how are you?"}
-    ]
-  }'
-```
-
-#### Streaming Chat Completions
-
-```bash
-curl http://localhost:5000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "watson-ai",
-    "messages": [
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "Hello, how are you?"}
-    ],
-    "stream": true
-  }'
-```
-
-#### Legacy Completions
-
-```bash
-curl http://localhost:5000/v1/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "watson-ai",
-    "prompt": "Hello, how are you?"
-  }'
-```
-
-#### List Models
-
-```bash
-curl http://localhost:5000/v1/models
-```
-
 ## Configuration
 
 The proxy server uses the following environment variables:
 
-- `IAM_APIKEY`: Your Watson AI API key (required)
+- `IAM_APIKEY`: Your Watson Code Assistant API key (required)
 
 ## Integration Examples
 
@@ -209,12 +165,63 @@ response = chat_llm.invoke("Write a hello world program in Python.")
 print(response.content)
 ```
 
+## Usage
+
+### API Endpoints
+
+#### Chat Completions
+
+```bash
+curl http://localhost:5000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "watson-ai",
+    "messages": [
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "Hello, how are you?"}
+    ]
+  }'
+```
+
+#### Streaming Chat Completions
+
+```bash
+curl http://localhost:5000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "watson-ai",
+    "messages": [
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "Hello, how are you?"}
+    ],
+    "stream": true
+  }'
+```
+
+#### Legacy Completions
+
+```bash
+curl http://localhost:5000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "watson-ai",
+    "prompt": "Hello, how are you?"
+  }'
+```
+
+#### List Models
+
+```bash
+curl http://localhost:5000/v1/models
+```
+
+
 ## Limitations
 
 - Only supports a single model ("watson-ai")
 - Token counting is approximate
 - Some advanced OpenAI API features may not be supported
-- Tooling is not supported since Watson Code Assistant AI does not support it
+- Tooling is not supported since Watson Code Assistant API does not support it
 
 ## Contributing
 
